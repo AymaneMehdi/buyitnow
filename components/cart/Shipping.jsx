@@ -9,18 +9,16 @@ import BreadCrumbs from "../layouts/BreadCrumbs";
 
 const Shipping = ({ addresses }) => {
   const { cart } = useContext(CartContext);
-
-  const [shippingInfo, setShippinInfo] = useState("");
+  const [shippingInfo, setShippingInfo] = useState("");
 
   const setShippingAddress = (address) => {
-    setShippinInfo(address._id);
+    setShippingInfo(address._id);
   };
 
   const checkoutHandler = async () => {
     if (!shippingInfo) {
       return toast.error("Please select your shipping address");
     }
-    // move to stripe checkoutpage
     try {
       const { data } = await axios.post(
         `${process.env.API_URL}/api/orders/checkout_session`,
@@ -33,6 +31,7 @@ const Shipping = ({ addresses }) => {
       window.location.href = data.url;
     } catch (error) {
       console.log(error.response);
+      toast.error("Error during checkout. Please try again.");
     }
   };
 
@@ -50,24 +49,30 @@ const Shipping = ({ addresses }) => {
           <div className="flex flex-col md:flex-row gap-4 lg:gap-8">
             <main className="md:w-2/3">
               <article className="border border-gray-200 bg-white shadow-sm rounded p-4 lg:p-6 mb-5">
-                <h2 class="text-xl font-semibold mb-5">Shipping information</h2>
+                <h2 className="text-xl font-semibold mb-5">Shipping information</h2>
 
-                <div class="grid sm:grid-cols-2 gap-4 mb-6">
+                <div className="grid sm:grid-cols-2 gap-4 mb-6">
                   {addresses?.map((address) => (
                     <label
-                      class="flex p-3 border border-gray-200 rounded-md bg-gray-50 hover:border-blue-400 hover:bg-blue-50 cursor-pointer"
+                      key={address._id} // Added key prop
+                      className={`flex p-3 border border-gray-200 rounded-md bg-gray-50 hover:border-blue-400 hover:bg-blue-50 cursor-pointer ${
+                        shippingInfo === address._id ? "border-blue-500" : ""
+                      }`}
                       onClick={() => setShippingAddress(address)}
                     >
                       <span>
                         <input
+                          id={address._id} // Added id for accessibility
                           name="shipping"
                           type="radio"
-                          class="h-4 w-4 mt-1"
+                          className="h-4 w-4 mt-1"
+                          checked={shippingInfo === address._id} // Set checked state
+                          readOnly // Make input readOnly to prevent user typing
                         />
                       </span>
-                      <p class="ml-2">
+                      <p className="ml-2">
                         <span>{address.street}</span>
-                        <small class="block text-sm text-gray-400">
+                        <small className="block text-sm text-gray-400">
                           {address.city}, {address.state}, {address.zipCode}
                           <br />
                           {address.country}
@@ -93,12 +98,12 @@ const Shipping = ({ addresses }) => {
                   >
                     Back
                   </Link>
-                  <a
+                  <button
                     className="px-5 py-2 inline-block text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 cursor-pointer"
                     onClick={checkoutHandler}
                   >
                     Checkout
-                  </a>
+                  </button>
                 </div>
               </article>
             </main>
@@ -124,26 +129,26 @@ const Shipping = ({ addresses }) => {
 
                 <hr className="my-4" />
 
-                <h2 class="text-lg font-semibold mb-3">Items in cart</h2>
+                <h2 className="text-lg font-semibold mb-3">Items in cart</h2>
 
                 {cart?.cartItems?.map((item) => (
-                  <figure class="flex items-center mb-4 leading-5">
+                  <figure key={item.product} className="flex items-center mb-4 leading-5"> {/* Added key prop */}
                     <div>
-                      <div class="block relative w-20 h-20 rounded p-1 border border-gray-200">
+                      <div className="block relative w-20 h-20 rounded p-1 border border-gray-200">
                         <img
                           width="50"
                           height="50"
                           src={item.image}
-                          alt="Title"
+                          alt={item.name} // Improved alt text
                         />
-                        <span class="absolute -top-2 -right-2 w-6 h-6 text-sm text-center flex items-center justify-center text-white bg-gray-400 rounded-full">
+                        <span className="absolute -top-2 -right-2 w-6 h-6 text-sm text-center flex items-center justify-center text-white bg-gray-400 rounded-full">
                           {item.quantity}
                         </span>
                       </div>
                     </div>
-                    <figcaption class="ml-3">
+                    <figcaption className="ml-3">
                       <p>{item.name.substring(0, 50)}</p>
-                      <p class="mt-1 text-gray-400">
+                      <p className="mt-1 text-gray-400">
                         Total: ${item.quantity * item.price}
                       </p>
                     </figcaption>

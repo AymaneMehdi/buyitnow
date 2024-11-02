@@ -23,7 +23,7 @@ const orderSchema = mongoose.Schema({
         required: true,
       },
       quantity: {
-        type: String,
+        type: Number,  // Changed to Number
         required: true,
       },
       image: {
@@ -31,7 +31,7 @@ const orderSchema = mongoose.Schema({
         required: true,
       },
       price: {
-        type: String,
+        type: Number,  // Changed to Number
         required: true,
       },
     },
@@ -45,10 +45,6 @@ const orderSchema = mongoose.Schema({
       type: String,
       required: true,
     },
-    taxPaid: {
-      type: Number,
-      required: true,
-    },
     amountPaid: {
       type: Number,
       required: true,
@@ -58,7 +54,7 @@ const orderSchema = mongoose.Schema({
     type: String,
     default: "Processing",
   },
-  createAt: {
+  createdAt: {  // Corrected typo
     type: Date,
     default: Date.now,
   },
