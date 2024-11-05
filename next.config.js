@@ -4,11 +4,11 @@ const nextConfig = {
     appDir: true,
   },
   env: {
-        API_URL: "http://localhost:3000",
+        API_URL: "https://myproje-fw2dfrom1-saidtex.vercel.app",
         DB_LOCAL_URI: "mongodb://localhost:27017/wolder",
         DB_URI: "mongodb://localhost:27017/wolder",
 
-        NEXTAUTH_URL: "http://localhost:3000",
+        NEXTAUTH_URL: "https://myproje-fw2dfrom1-saidtex.vercel.app",
 
         CLOUD_NAME: "drukcn21i",
         CLOUDINARY_API_KEY: "699441114721467",
