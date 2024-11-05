@@ -21,7 +21,7 @@ const nextConfig = {
     NEXTAUTH_SECRET: "wolder2010",
   },
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: ["res.cloudinary.com"], 
   },
 };
 
