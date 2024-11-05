@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useContext } from "react";
-
 import CartContext from "@/context/CartContext";
 import Link from "next/link";
 
@@ -32,14 +31,11 @@ const Cart = () => {
     0
   );
 
-  const taxAmount = (amountWithoutTax * 0.15).toFixed(2);
-
-  const totalAmount = (Number(amountWithoutTax) + Number(taxAmount)).toFixed(2);
+  const totalAmount = amountWithoutTax.toFixed(2);
 
   const checkoutHandler = () => {
     const data = {
       amount: amountWithoutTax,
-      tax: taxAmount,
       totalAmount,
     };
 
@@ -63,8 +59,8 @@ const Cart = () => {
               <main className="md:w-3/4">
                 <article className="border border-gray-200 bg-white shadow-sm rounded mb-5 p-3 lg:p-5">
                   {cart?.cartItems?.map((cartItem) => (
-                    <div>
-                      <div className="flex flex-wrap lg:flex-row gap-5  mb-4">
+                    <div key={cartItem.product}>
+                      <div className="flex flex-wrap lg:flex-row gap-5 mb-4">
                         <div className="w-full lg:w-2/5 xl:w-2/4">
                           <figure className="flex leading-5">
                             <div>
@@ -79,7 +75,6 @@ const Cart = () => {
                                 </a>
                               </p>
                               <p className="mt-1 text-gray-400">
-                                {" "}
                                 Seller: {cartItem.seller}
                               </p>
                             </figcaption>
@@ -89,28 +84,24 @@ const Cart = () => {
                           <div className="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
                             <button
                               data-action="decrement"
-                              className=" bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
+                              className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-l cursor-pointer outline-none"
                               onClick={() => decreaseQty(cartItem)}
                             >
-                              <span className="m-auto text-2xl font-thin">
-                                −
-                              </span>
+                              <span className="m-auto text-2xl font-thin">−</span>
                             </button>
                             <input
                               type="number"
-                              className="outline-none focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-900  outline-none custom-input-number"
+                              className="outline-none focus:outline-none text-center w-full bg-gray-300 font-semibold text-md hover:text-black focus:text-black md:text-basecursor-default flex items-center text-gray-900 outline-none custom-input-number"
                               name="custom-input-number"
                               value={cartItem.quantity}
                               readOnly
-                            ></input>
+                            />
                             <button
                               data-action="increment"
                               className="bg-gray-300 text-gray-600 hover:text-gray-700 hover:bg-gray-400 h-full w-20 rounded-r cursor-pointer"
                               onClick={() => increaseQty(cartItem)}
                             >
-                              <span className="m-auto text-2xl font-thin">
-                                +
-                              </span>
+                              <span className="m-auto text-2xl font-thin">+</span>
                             </button>
                           </div>
                         </div>
@@ -120,8 +111,7 @@ const Cart = () => {
                               ${cartItem.price * cartItem.quantity.toFixed(2)}
                             </p>
                             <small className="text-gray-400">
-                              {" "}
-                              ${cartItem.price} / per item{" "}
+                              ${cartItem.price} / per item
                             </small>
                           </div>
                         </div>
@@ -129,9 +119,7 @@ const Cart = () => {
                           <div className="float-right">
                             <a
                               className="px-4 py-2 inline-block text-red-600 bg-white shadow-sm border border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer"
-                              onClick={() =>
-                                deleteItemFromCart(cartItem?.product)
-                              }
+                              onClick={() => deleteItemFromCart(cartItem?.product)}
                             >
                               Remove
                             </a>
@@ -147,11 +135,11 @@ const Cart = () => {
               <aside className="md:w-1/4">
                 <article className="border border-gray-200 bg-white shadow-sm rounded mb-5 p-3 lg:p-5">
                   <ul className="mb-5">
-                    <li className="flex justify-between text-gray-600  mb-1">
-                      <span>Amount before Tax:</span>
+                    <li className="flex justify-between text-gray-600 mb-1">
+                      <span>Amount:</span>
                       <span>${amountWithoutTax}</span>
                     </li>
-                    <li className="flex justify-between text-gray-600  mb-1">
+                    <li className="flex justify-between text-gray-600 mb-1">
                       <span>Total Units:</span>
                       <span className="text-green-500">
                         {cart?.cartItems?.reduce(
@@ -160,10 +148,6 @@ const Cart = () => {
                         )}{" "}
                         (Units)
                       </span>
-                    </li>
-                    <li className="flex justify-between text-gray-600  mb-1">
-                      <span>TAX:</span>
-                      <span>${taxAmount}</span>
                     </li>
                     <li className="text-lg font-bold border-t flex justify-between mt-3 pt-3">
                       <span>Total price:</span>

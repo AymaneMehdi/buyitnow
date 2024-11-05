@@ -165,13 +165,11 @@ async function getCartItems(line_items) {
   });
 }
 
-
-
 export const webhook = async (req, res) => {
   try {
     const rawBody = await getRawBody(req);
     const signature = req.headers["stripe-signature"];
-    
+
     const event = stripe.webhooks.constructEvent(
       rawBody,
       signature,
@@ -182,7 +180,7 @@ export const webhook = async (req, res) => {
       const session = event.data.object;
 
       const line_items = await stripe.checkout.sessions.listLineItems(
-        session.id
+        event.data.object.id
       );
 
       const orderItems = await getCartItems(line_items);
@@ -193,24 +191,19 @@ export const webhook = async (req, res) => {
         id: session.payment_intent,
         status: session.payment_status,
         amountPaid,
-        taxPaid: session.total_details.amount_tax / 100,
       };
 
       const orderData = {
         user: userId,
-        shippingInfo: JSON.parse(session.metadata.shippingInfo), // Ensure to parse if it's a JSON string
+        shippingInfo: session.metadata.shippingInfo,
         paymentInfo,
         orderItems,
       };
 
-      await Order.create(orderData);
+      const order = await Order.create(orderData);
       res.status(201).json({ success: true });
-    } else {
-      console.log(`Unhandled event type ${event.type}`);
-      res.status(200).json({ received: true });
     }
   } catch (error) {
-    console.error("Webhook Error:", error); // Log the error for debugging
-    res.status(400).send(`Webhook Error: ${error.message}`);
+    console.log(error);
   }
 };

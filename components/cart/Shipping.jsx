@@ -54,7 +54,7 @@ const Shipping = ({ addresses }) => {
                 <div className="grid sm:grid-cols-2 gap-4 mb-6">
                   {addresses?.map((address) => (
                     <label
-                      key={address._id} // Added key prop
+                      key={address._id}
                       className={`flex p-3 border border-gray-200 rounded-md bg-gray-50 hover:border-blue-400 hover:bg-blue-50 cursor-pointer ${
                         shippingInfo === address._id ? "border-blue-500" : ""
                       }`}
@@ -62,12 +62,12 @@ const Shipping = ({ addresses }) => {
                     >
                       <span>
                         <input
-                          id={address._id} // Added id for accessibility
+                          id={address._id}
                           name="shipping"
                           type="radio"
                           className="h-4 w-4 mt-1"
-                          checked={shippingInfo === address._id} // Set checked state
-                          readOnly // Make input readOnly to prevent user typing
+                          checked={shippingInfo === address._id}
+                          readOnly
                         />
                       </span>
                       <p className="ml-2">
@@ -115,10 +115,6 @@ const Shipping = ({ addresses }) => {
                     <span>Amount:</span>
                     <span>${cart?.checkoutInfo?.amount}</span>
                   </li>
-                  <li className="flex justify-between mb-1">
-                    <span>Est TAX:</span>
-                    <span>${cart?.checkoutInfo?.tax}</span>
-                  </li>
                   <li className="border-t flex justify-between mt-3 pt-3">
                     <span>Total Amount:</span>
                     <span className="text-gray-900 font-bold">
@@ -132,14 +128,14 @@ const Shipping = ({ addresses }) => {
                 <h2 className="text-lg font-semibold mb-3">Items in cart</h2>
 
                 {cart?.cartItems?.map((item) => (
-                  <figure key={item.product} className="flex items-center mb-4 leading-5"> {/* Added key prop */}
+                  <figure key={item.product} className="flex items-center mb-4 leading-5">
                     <div>
                       <div className="block relative w-20 h-20 rounded p-1 border border-gray-200">
                         <img
                           width="50"
                           height="50"
                           src={item.image}
-                          alt={item.name} // Improved alt text
+                          alt={item.name}
                         />
                         <span className="absolute -top-2 -right-2 w-6 h-6 text-sm text-center flex items-center justify-center text-white bg-gray-400 rounded-full">
                           {item.quantity}
